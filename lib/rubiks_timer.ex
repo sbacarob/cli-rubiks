@@ -1,6 +1,6 @@
-defmodule Counter do
+defmodule RubiksTimer do
   @moduledoc """
-  Documentation for Counter.
+  Documentation for Rubiks Timer.
   """
   @behaviour Ratatouille.App
 
@@ -151,4 +151,4 @@ defmodule Counter do
   end
 end
 
-Ratatouille.run(Counter, interval: 10)
+Ratatouille.run(RubiksTimer, interval: 10)
