@@ -16,17 +16,36 @@ defmodule RubiksTimer do
       init_time: DateTime.utc_now(),
       time: 0,
       times: [],
-      scramble: get_scramble()}
+      scramble: get_scramble(),
+      solves: %{}
+    }
   end
 
-  def update(%{init_time: init_time, timer_running: timer_running, times: times, time: time} = model, msg) do
+  def update(model, msg) do
+    %{
+      init_time: init_time,
+      timer_running: timer_running,
+      times: times,
+      time: time,
+      scramble: scramble,
+      solves: solves
+    } = model
+
     case msg do
       {:event, %{key: @spacebar}} ->
         if timer_running do
-          %{model | timer_running: !timer_running, scramble: get_scramble(), times: [time | times]}
+          %{
+            model | timer_running: !timer_running,
+            solves: Map.put(solves, simplify(scramble), time),
+            scramble: get_scramble(),
+            times: [time | times],
+          }
         else
           %{model | timer_running: !timer_running, init_time: DateTime.utc_now(), time: 0}
         end
+
+      {:event, %{ch: ?s}} ->
+        %{model | scramble: get_scramble()}
 
       :tick ->
         if timer_running do
@@ -43,25 +62,24 @@ defmodule RubiksTimer do
   end
 
   def render(model) do
-    top_bar =
-      bar do
-        label(content: "This is a cube timer inspired by http://www.cubetimer.com")
-      end
-
-    view(top_bar: top_bar) do
+    solve_times = model |> Map.get(:solves) |> get_children
+    view() do
       row do
         column(size: 2) do
         end
         column(size: 8) do
           panel title: "Instructions" do
-            label(content: "This is a cube timer. You can start/stop it by pressing the space bar")
-            label(content: "Or if you prefer, you can place two fingers on your")
-            label(content: "trackpad and move them backwards to begin or forwards to stop")
+            label(content: "This is a simple cube timer. Inspired by http://www.cubetimer.com")
+            label(content: "A new scramble will be generated each time you stop the timer")
+            label(content: "COMMANDS:")
+            label(content: "spacebar -  start/stop the timer")
+            label(content: "'S' - generate a new scramble without starting the timer")
           end
         end
         column(size: 2) do
         end
       end
+
       row do
         column(size: 2) do
         end
@@ -73,6 +91,7 @@ defmodule RubiksTimer do
         column(size: 2) do
         end
       end
+
       row do
         column(size: 2) do
         end
@@ -81,6 +100,10 @@ defmodule RubiksTimer do
             column(size: 8) do
               panel title: "Time" do
                 label(content: "Current time: #{model[:time]}s")
+              end
+
+              panel title: "All times" do
+                table(solve_times)
               end
             end
             column(size: 4) do
@@ -116,6 +139,16 @@ defmodule RubiksTimer do
     end
   end
 
+  def get_children(solves) do
+    solves
+    |> Enum.map(fn {k, v} ->
+      [
+        table_row([table_cell(content: "#{k}")]),
+        table_row([table_cell(content: "#{v}")])
+      ]
+    end)
+  end
+
   def get_scramble() do
     Stream.unfold(Enum.random(valid_tokens(nil)), fn x ->
       new_token = Enum.random(valid_tokens(x))
@@ -123,6 +156,10 @@ defmodule RubiksTimer do
     end)
     |> Enum.take(24)
     |> Enum.join(", ")
+  end
+
+  def simplify(scramble) do
+    scramble |> String.split(", ") |> Enum.join()
   end
 
   defp get_best([]), do: "-"
