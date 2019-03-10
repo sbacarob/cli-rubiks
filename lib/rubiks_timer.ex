@@ -168,30 +168,36 @@ defmodule RubiksTimer do
   defp get_average([]), do: "-"
   defp get_average(times), do: Enum.sum(times) / Kernel.length(times)
 
-  defp valid_tokens([t | [t2 | _]]) when t in ["L", "L'", "L2"] do
+  defp valid_tokens([t | tail]) when t in ["L", "L'", "L2"] do
     remove_self = all_tokens() -- ["L", "L'", "L2"]
-    if t2 in ["R", "R'", "R2"], do: remove_self -- ["R", "R'", "R2"], else: remove_self
+    if is_list(tail) and List.first(tail) =~ "R", do: remove_self -- ["R", "R'", "R2"], else: remove_self
   end
 
-  defp valid_tokens([t | _]) when t in ["U", "U'", "U2"] do
-    all_tokens() -- ["U", "U'", "U2"]
+  defp valid_tokens([t | tail]) when t in ["U", "U'", "U2"] do
+    remove_self = all_tokens() -- ["U", "U'", "U2"]
+    if is_list(tail) and List.first(tail) =~ "D", do: remove_self -- ["D", "D'", "D2"], else: remove_self
   end
 
-  defp valid_tokens([t | _]) when t in ["R", "R'", "R2"] do
-    all_tokens() -- ["R", "R'", "R2"]
+  defp valid_tokens([t | tail]) when t in ["R", "R'", "R2"] do
+    remove_self = all_tokens() -- ["R", "R'", "R2"]
+    if is_list(tail) and List.first(tail) =~ "L", do: remove_self -- ["L", "L'", "L2"], else: remove_self
   end
 
-  defp valid_tokens([t | _]) when t in ["F", "F'", "F2"] do
-    all_tokens() -- ["F", "F'", "F2"]
+  defp valid_tokens([t | tail]) when t in ["F", "F'", "F2"] do
+    remove_self = all_tokens() -- ["F", "F'", "F2"]
+    if is_list(tail) and List.first(tail) =~ "B", do: remove_self -- ["B", "B'", "B2"], else: remove_self
   end
 
-  defp valid_tokens([t | _]) when t in ["B", "B'", "B2"] do
-    all_tokens() -- ["B", "B'", "B2"]
+  defp valid_tokens([t | tail]) when t in ["B", "B'", "B2"] do
+    remove_self = all_tokens() -- ["B", "B'", "B2"]
+    if is_list(tail) and List.first(tail) =~ "F", do: remove_self -- ["F", "F'", "F2"], else: remove_self
   end
 
-  defp valid_tokens([t | _]) when t in ["D", "D'", "D2"] do
-    all_tokens() -- ["D", "D'", "D2"]
+  defp valid_tokens([t | tail]) when t in ["D", "D'", "D2"] do
+    remove_self = all_tokens() -- ["D", "D'", "D2"]
+    if is_list(tail) and List.first(tail) =~ "T", do: remove_self -- ["T", "T'", "T2"], else: remove_self
   end
+
   defp valid_tokens(_), do: all_tokens()
 
   defp all_tokens() do
