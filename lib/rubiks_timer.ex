@@ -65,9 +65,7 @@ defmodule RubiksTimer do
     solve_times = model |> Map.get(:solves) |> get_children
     view() do
       row do
-        column(size: 2) do
-        end
-        column(size: 8) do
+        column(size: 12) do
           panel title: "Instructions" do
             label(content: "This is a simple cube timer. Inspired by http://www.cubetimer.com")
             label(content: "A new scramble will be generated each time you stop the timer")
@@ -76,26 +74,18 @@ defmodule RubiksTimer do
             label(content: "'S' - generate a new scramble without starting the timer")
           end
         end
-        column(size: 2) do
-        end
       end
 
       row do
-        column(size: 2) do
-        end
-        column(size: 8) do
+        column(size: 12) do
           panel title: "Scramble" do
             label(content: model[:scramble])
           end
         end
-        column(size: 2) do
-        end
       end
 
       row do
-        column(size: 2) do
-        end
-        column(size: 8) do
+        column(size: 12) do
           row do
             column(size: 8) do
               panel title: "Time" do
@@ -132,8 +122,6 @@ defmodule RubiksTimer do
               end
             end
           end
-        end
-        column(size: 2) do
         end
       end
     end
