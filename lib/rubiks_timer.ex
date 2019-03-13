@@ -17,7 +17,7 @@ defmodule RubiksTimer do
       time: 0,
       times: [],
       scramble: get_scramble(),
-      solves: %{}
+      solves: []
     }
   end
 
@@ -27,7 +27,6 @@ defmodule RubiksTimer do
       timer_running: timer_running,
       times: times,
       time: time,
-      scramble: scramble,
       solves: solves
     } = model
 
@@ -36,7 +35,7 @@ defmodule RubiksTimer do
         if timer_running do
           %{
             model | timer_running: !timer_running,
-            solves: Map.put(solves, simplify(scramble), time),
+            solves: [time | solves],
             scramble: get_scramble(),
             times: [time | times],
           }
@@ -91,10 +90,6 @@ defmodule RubiksTimer do
               panel title: "Time" do
                 label(content: "Current time: #{model[:time]}s")
               end
-
-              panel title: "All times" do
-                table(solve_times)
-              end
             end
             column(size: 4) do
               panel title: "Statistics" do
@@ -120,6 +115,10 @@ defmodule RubiksTimer do
                   end
                 end
               end
+
+              panel title: "All times" do
+                table(solve_times)
+              end
             end
           end
         end
@@ -129,12 +128,9 @@ defmodule RubiksTimer do
 
   def get_children(solves) do
     solves
-    |> Enum.map(fn {k, v} ->
-      [
-        table_row([table_cell(content: "#{k}")]),
-        table_row([table_cell(content: "#{v}")])
-      ]
-    end)
+    |> Enum.reverse()
+    |> Enum.with_index(1)
+    |> Enum.map(fn {v, i} -> [ table_row([table_cell(content: "#{i}. #{v}")]) ] end)
   end
 
   def get_scramble() do
