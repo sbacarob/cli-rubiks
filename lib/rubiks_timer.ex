@@ -255,7 +255,7 @@ defmodule RubiksTimer do
 
                   table_row do
                     table_cell(content: "Average 10:")
-                    table_cell(content: "#{get_average(model[:times])}")
+                    table_cell(content: "#{get_10_of_12(model[:times])}")
                   end
                 end
               end
@@ -300,9 +300,20 @@ defmodule RubiksTimer do
   defp get_3_of_5(times) do
     times
     |> Enum.take(5)
+    |> Enum.sort()
     |> Enum.slice(1, 3)
     |> Enum.sum()
     |> Kernel./(3)
+  end
+
+  defp get_10_of_12([]), do: "-"
+  defp get_10_of_12(times) do
+    times
+    |> Enum.take(12)
+    |> Enum.sort()
+    |> Enum.slice(1, 10)
+    |> Enum.sum()
+    |> Kernel./(10)
   end
 
   defp valid_tokens([t | tail]) when t in ["L", "L'", "L2"] do
