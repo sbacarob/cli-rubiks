@@ -296,7 +296,7 @@ defmodule RubiksTimer do
   defp get_average([]), do: "-"
   defp get_average(times), do: Enum.sum(times) / Kernel.length(times)
 
-  defp get_3_of_5([]), do: "-"
+  defp get_3_of_5(times) when length(times) < 3, do: "-"
   defp get_3_of_5(times) do
     times
     |> Enum.take(5)
@@ -306,7 +306,7 @@ defmodule RubiksTimer do
     |> Kernel./(3)
   end
 
-  defp get_10_of_12([]), do: "-"
+  defp get_10_of_12(times) when length(times) < 12, do: "-"
   defp get_10_of_12(times) do
     times
     |> Enum.take(12)
