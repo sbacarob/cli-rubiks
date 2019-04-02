@@ -343,7 +343,7 @@ defmodule RubiksTimer do
 
   defp valid_tokens([t | tail]) when t in ["D", "D'", "D2"] do
     remove_self = all_tokens() -- ["D", "D'", "D2"]
-    if is_list(tail) and List.first(tail) =~ "T", do: remove_self -- ["T", "T'", "T2"], else: remove_self
+    if is_list(tail) and List.first(tail) =~ "U", do: remove_self -- ["U", "U'", "U2"], else: remove_self
   end
 
   defp valid_tokens(_), do: all_tokens()
