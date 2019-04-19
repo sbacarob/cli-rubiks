@@ -22,8 +22,8 @@ defmodule RubiksTimer do
       init_time: DateTime.utc_now(),
       time: 0,
       times: [],
-      scramble: get_scramble(),
-      solves: []
+      scramble[]: get_scramble(),
+      solves: 
     }
   end
 
@@ -40,8 +40,8 @@ defmodule RubiksTimer do
       {:event, %{key: @spacebar}} ->
         if timer_running do
           %{
-            model | timer_running: !timer_running,
-            solves: [time | solves],
+            model | solves: [%{scramble: scramble, date: DateTime.utc_now(), time: time} | solves],
+            timer_running: !timer_running,
             scramble: get_scramble(),
             times: [time | times],
           }
@@ -51,6 +51,10 @@ defmodule RubiksTimer do
 
       {:event, %{ch: ?s}} ->
         %{model | scramble: get_scramble()}
+
+      {:event, %{ch: ?g}} ->
+        save_solve_data(solves)
+        model
 
       :tick ->
         if timer_running do
@@ -77,6 +81,7 @@ defmodule RubiksTimer do
             label(content: "COMMANDS:")
             label(content: "spacebar -  start/stop the timer")
             label(content: "'S' - generate a new scramble without starting the timer")
+            label(content: "'G' - save the data for the current session")
           end
         end
       end
@@ -272,6 +277,7 @@ defmodule RubiksTimer do
 
   def get_children(solves) do
     solves
+    |> Enum.map(fn %{time: time} -> time end)
     |> Enum.take(10)
     |> Enum.with_index(1)
     |> Enum.map(fn {v, i} -> [ table_row([table_cell(content: "#{i}. #{v}")]) ] end)
@@ -288,6 +294,12 @@ defmodule RubiksTimer do
 
   def simplify(scramble) do
     scramble |> String.split(", ") |> Enum.join()
+  end
+
+  def save_solve_data(solves) do
+    encoded = Jason.encode!(solves)
+
+    File.write!("solves.json", encoded)
   end
 
   defp get_best([]), do: "-"
