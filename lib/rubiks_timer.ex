@@ -300,7 +300,7 @@ defmodule RubiksTimer do
   def save_solve_data(solves) do
     encoded = Jason.encode!(solves)
 
-    File.write!("solves.json", encoded)
+    File.write!("data/solves.json", encoded)
   end
 
   defp get_best([]), do: "-"
