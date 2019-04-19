@@ -22,8 +22,8 @@ defmodule RubiksTimer do
       init_time: DateTime.utc_now(),
       time: 0,
       times: [],
-      scramble[]: get_scramble(),
-      solves: 
+      scramble: get_scramble(),
+      solves: []
     }
   end
 
@@ -33,7 +33,8 @@ defmodule RubiksTimer do
       timer_running: timer_running,
       times: times,
       time: time,
-      solves: solves
+      solves: solves,
+      scramble: scramble,
     } = model
 
     case msg do
