@@ -21,7 +21,7 @@ defmodule RubiksTimer do
       timer_running: false,
       init_time: DateTime.utc_now(),
       time: 0,
-      times: [],
+      times: get_historic_times(),
       scramble: get_scramble(),
       solves: get_historic_solves()
     }
@@ -307,6 +307,15 @@ defmodule RubiksTimer do
     case File.read("data/solves.json") do
       {:error, _reason} -> []
       {:ok, contents} -> Jason.decode!(contents, keys: :atoms)
+    end
+  end
+
+  def get_historic_times() do
+    case File.read("data/solves.json") do
+      {:error, _reason} -> []
+      {:ok, contents} ->
+        Jason.decode!(contents, keys: :atoms)
+        |> Enum.map(fn x -> x[:time] end)
     end
   end
 
