@@ -23,7 +23,7 @@ defmodule RubiksTimer do
       time: 0,
       times: [],
       scramble: get_scramble(),
-      solves: []
+      solves: get_historic_solves()
     }
   end
 
@@ -301,6 +301,13 @@ defmodule RubiksTimer do
     encoded = Jason.encode!(solves)
 
     File.write!("data/solves.json", encoded)
+  end
+
+  def get_historic_solves() do
+    case File.read("data/solves.json") do
+      {:error, _reason} -> []
+      {:ok, contents} -> Jason.decode!(contents, keys: :atoms)
+    end
   end
 
   defp get_best([]), do: "-"
