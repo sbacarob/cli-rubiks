@@ -83,6 +83,7 @@ defmodule RubiksTimer do
             label(content: "spacebar -  start/stop the timer")
             label(content: "'S' - generate a new scramble without starting the timer")
             label(content: "'G' - save the data for the current session")
+            label(content: "'Q' - Close the timer. This won't save your solves")
           end
         end
       end
