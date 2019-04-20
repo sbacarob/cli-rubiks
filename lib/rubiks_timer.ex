@@ -101,6 +101,17 @@ defmodule RubiksTimer do
                 label(content: "Current time: #{model[:time]}s")
               end
 
+              row do
+
+                column(size: 12) do
+                  panel title: "Progress" do
+
+                    chart(type: :line, series: Enum.reverse(model[:times]), height: 6)
+
+                  end
+                end
+              end
+
             end
 
             column(size: 4) do
