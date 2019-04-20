@@ -106,7 +106,7 @@ defmodule RubiksTimer do
                 column(size: 12) do
                   panel title: "Progress" do
 
-                    chart(type: :line, series: Enum.reverse(model[:times]), height: 6)
+                    chart(type: :line, series: Enum.reverse(model[:times]), height: 10)
 
                   end
                 end
