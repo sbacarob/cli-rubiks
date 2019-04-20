@@ -11,6 +11,7 @@ defmodule RubiksTimer do
   alias Ratatouille.Runtime.Subscription
 
   @spacebar key(:space)
+  @green color(:green)
 
   def init(_context) do
     %{
@@ -109,7 +110,7 @@ defmodule RubiksTimer do
                 table do
                   table_row do
                     table_cell(content: "Best:")
-                    table_cell(content: "#{get_best(model[:times])}")
+                    table_cell(content: "#{get_best(model[:times])}", color: @green)
                   end
 
                   table_row do

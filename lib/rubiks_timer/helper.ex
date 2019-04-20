@@ -1,13 +1,29 @@
 defmodule RubiksTimer.Helper do
 
   import Ratatouille.View
+  import Ratatouille.Constants, only: [color: 1]
+
+  @red color(:red)
+  @green color(:green)
 
   def get_children(solves) do
-    solves
-    |> Enum.map(fn %{time: time} -> time end)
-    |> Enum.take(10)
+    times = solves
+      |> Enum.map(fn %{time: time} -> time end)
+      |> Enum.take(10)
+
+    times
     |> Enum.with_index(1)
-    |> Enum.map(fn {v, i} -> [ table_row([table_cell(content: "#{i}. #{v}")]) ] end)
+    |> Enum.map(fn
+      {v, i} ->
+        cond do
+          v == Enum.min(times) ->
+            [ table_row([table_cell(content: "#{i}. #{v}", color: @green)]) ]
+          v == Enum.max(times) ->
+            [ table_row([table_cell(content: "#{i}. #{v}", color: @red)]) ]
+          true ->
+            [ table_row([table_cell(content: "#{i}. #{v}")]) ]
+        end
+    end)
   end
 
   def save_solve_data(solves) do
