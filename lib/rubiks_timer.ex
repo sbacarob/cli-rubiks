@@ -11,12 +11,6 @@ defmodule RubiksTimer do
   alias Ratatouille.Runtime.Subscription
 
   @spacebar key(:space)
-  @red color(:red)
-  @blue color(:blue)
-  @white color(:white)
-  @green color(:green)
-  @magenta color(:magenta)
-  @yellow color(:yellow)
 
   def init(_context) do
     %{
@@ -99,151 +93,19 @@ defmodule RubiksTimer do
       row do
         column(size: 12) do
           row do
+
             column(size: 8) do
+
               panel title: "Time" do
                 label(content: "Current time: #{model[:time]}s")
               end
 
-              row do
-                column(size: 8) do
-
-                  panel title: "Cube State" do
-                    table do
-                      table_row do
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: "W", color: @white)
-                        table_cell(content: "W", color: @white)
-                        table_cell(content: "W", color: @white)
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                      end
-                      table_row do
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: "W", color: @white)
-                        table_cell(content: "W", color: @white)
-                        table_cell(content: "W", color: @white)
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                      end
-                      table_row do
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: "W", color: @white)
-                        table_cell(content: "W", color: @white)
-                        table_cell(content: "W", color: @white)
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                      end
-
-                      table_row do
-                        table_cell(content: "O", color: @magenta)
-                        table_cell(content: "O", color: @magenta)
-                        table_cell(content: "O", color: @magenta)
-                        table_cell(content: "G", color: @green)
-                        table_cell(content: "G", color: @green)
-                        table_cell(content: "G", color: @green)
-                        table_cell(content: "R", color: @red)
-                        table_cell(content: "R", color: @red)
-                        table_cell(content: "R", color: @red)
-                        table_cell(content: "B", color: @blue)
-                        table_cell(content: "B", color: @blue)
-                        table_cell(content: "B", color: @blue)
-                      end
-                      table_row do
-                        table_cell(content: "O", color: @magenta)
-                        table_cell(content: "O", color: @magenta)
-                        table_cell(content: "O", color: @magenta)
-                        table_cell(content: "G", color: @green)
-                        table_cell(content: "G", color: @green)
-                        table_cell(content: "G", color: @green)
-                        table_cell(content: "R", color: @red)
-                        table_cell(content: "R", color: @red)
-                        table_cell(content: "R", color: @red)
-                        table_cell(content: "B", color: @blue)
-                        table_cell(content: "B", color: @blue)
-                        table_cell(content: "B", color: @blue)
-                      end
-                      table_row do
-                        table_cell(content: "O", color: @magenta)
-                        table_cell(content: "O", color: @magenta)
-                        table_cell(content: "O", color: @magenta)
-                        table_cell(content: "G", color: @green)
-                        table_cell(content: "G", color: @green)
-                        table_cell(content: "G", color: @green)
-                        table_cell(content: "R", color: @red)
-                        table_cell(content: "R", color: @red)
-                        table_cell(content: "R", color: @red)
-                        table_cell(content: "B", color: @blue)
-                        table_cell(content: "B", color: @blue)
-                        table_cell(content: "B", color: @blue)
-                      end
-
-                      table_row do
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: "Y", color: @yellow)
-                        table_cell(content: "Y", color: @yellow)
-                        table_cell(content: "Y", color: @yellow)
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                      end
-                      table_row do
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: "Y", color: @yellow)
-                        table_cell(content: "Y", color: @yellow)
-                        table_cell(content: "Y", color: @yellow)
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                      end
-                      table_row do
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: "Y", color: @yellow)
-                        table_cell(content: "Y", color: @yellow)
-                        table_cell(content: "Y", color: @yellow)
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                        table_cell(content: " ")
-                      end
-                    end
-                  end
-                end
-              end
             end
+
             column(size: 4) do
+
               panel title: "Statistics" do
+
                 table do
                   table_row do
                     table_cell(content: "Best:")
@@ -265,11 +127,13 @@ defmodule RubiksTimer do
                     table_cell(content: "#{get_10_of_12(model[:times])}")
                   end
                 end
+
               end
 
               panel title: "Last 10 times" do
                 table(solve_times)
               end
+
             end
           end
         end
