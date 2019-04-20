@@ -6,7 +6,7 @@ defmodule RubiksTimer do
 
   import Ratatouille.View
   import Ratatouille.Constants, only: [key: 1, color: 1]
-  import RubiksTimer.{Helper, Stats}
+  import RubiksTimer.{Helper, Scrambler, Stats}
 
   alias Ratatouille.Runtime.Subscription
 
