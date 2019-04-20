@@ -138,6 +138,11 @@ defmodule RubiksTimer do
                     table_cell(content: "Average 10:")
                     table_cell(content: "#{get_10_of_12(model[:times])}")
                   end
+
+                  table_row do
+                    table_cell(content: "Solve count:")
+                    table_cell(content: "#{length(model[:times])}")
+                  end
                 end
 
               end
