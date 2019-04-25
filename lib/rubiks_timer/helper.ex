@@ -1,10 +1,12 @@
 defmodule RubiksTimer.Helper do
 
   import Ratatouille.View
-  import Ratatouille.Constants, only: [color: 1]
+  import Ratatouille.Constants, only: [color: 1, attribute: 1]
 
   @red color(:red)
   @green color(:green)
+  @blue color(:blue)
+  @bold attribute(:bold)
 
   def get_children(solves) do
     times = solves
@@ -24,6 +26,25 @@ defmodule RubiksTimer.Helper do
             [ table_row([table_cell(content: "#{i}. #{v}")]) ]
         end
     end)
+  end
+
+  def get_time_frequencies(solves) do
+    data = solves
+      |> to_histogram()
+      |> Enum.map(fn
+       {k, v} ->
+          [ table_row([
+            table_cell(content: "#{k}.00 - #{k + 0.99}"),
+            table_cell(content: "#{v}")
+          ]) ]
+      end)
+
+    header = [[table_row([
+      table_cell(content: "Range", color: @blue, attributes: [@bold]),
+      table_cell(content: "# of times", color: @blue, attributes: [@bold])
+    ])]]
+
+    header ++ data
   end
 
   def save_solve_data(solves) do
