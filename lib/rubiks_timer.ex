@@ -106,7 +106,10 @@ defmodule RubiksTimer do
                 column(size: 12) do
                   panel title: "Progress" do
 
-                    chart(type: :line, series: Enum.reverse(model[:times]), height: 10)
+                    chart(type: :line, series: Enum.group_by(model[:solves],
+                      fn %{time: time} ->
+                        Kernel.trunc(time)
+                      end) |> Enum.map(fn {_k, v} -> length(v) end), height: 10)
 
                   end
                 end
