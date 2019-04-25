@@ -20,7 +20,8 @@ defmodule RubiksTimer do
       time: 0,
       times: get_historic_times(),
       scramble: get_scramble(),
-      solves: get_historic_solves()
+      solves: get_historic_solves(),
+      instructions_showing: false
     }
   end
 
@@ -32,6 +33,7 @@ defmodule RubiksTimer do
       time: time,
       solves: solves,
       scramble: scramble,
+      instructions_showing: instructions_showing
     } = model
 
     case msg do
@@ -54,6 +56,9 @@ defmodule RubiksTimer do
         save_solve_data(solves)
         model
 
+      {:event, %{ch: ?i}} ->
+        %{model | instructions_showing: !instructions_showing}
+
       :tick ->
         if timer_running do
           %{model | time: DateTime.diff(DateTime.utc_now(), init_time, :microsecond) / 1000000}
@@ -70,15 +75,14 @@ defmodule RubiksTimer do
 
   def render(model) do
     solve_times = model |> Map.get(:solves) |> get_children
+
     view() do
       row do
         column(size: 12) do
           panel title: "Instructions" do
-            label(content: "COMMANDS:")
             label(content: "spacebar -  start/stop the timer")
-            label(content: "'S' - generate a new scramble without starting the timer")
-            label(content: "'G' - save the data for the current session")
-            label(content: "'Q' - Close the timer. This won't save your solves")
+            label(content: "'Q' - Close the timer. This won't save your solve data")
+            label(content: "'I' - Toggle display complete instructions")
           end
         end
       end
@@ -152,6 +156,18 @@ defmodule RubiksTimer do
               end
 
             end
+          end
+        end
+      end
+
+      if model.instructions_showing do
+        overlay(padding: 10) do
+          panel title: "Instructions", height: :fill do
+            label(content: "spacebar -  Start/stop the timer")
+            label(content: "'S' - Generate a new scramble without starting the timer")
+            label(content: "'G' - Save the solves data")
+            label(content: "'Q' - Close the timer. This won't save your solve data")
+            label(content: "'I' - Toggle display complete instructions")
           end
         end
       end
