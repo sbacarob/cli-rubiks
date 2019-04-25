@@ -47,4 +47,11 @@ defmodule RubiksTimer.Helper do
         |> Enum.map(fn x -> x[:time] end)
     end
   end
+
+  def to_histogram(solves) do
+    solves
+    |> Enum.group_by(fn %{time: time} -> Kernel.trunc(time) end)
+    |> Enum.map(fn {k, v} -> {k, length(v)} end)
+    |> Map.new()
+  end
 end
