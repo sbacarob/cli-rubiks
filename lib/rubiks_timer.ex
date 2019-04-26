@@ -5,13 +5,14 @@ defmodule RubiksTimer do
   @behaviour Ratatouille.App
 
   import Ratatouille.View
-  import Ratatouille.Constants, only: [key: 1, color: 1]
+  import Ratatouille.Constants, only: [key: 1, color: 1, attribute: 1]
   import RubiksTimer.{Helper, Scrambler, Stats}
 
   alias Ratatouille.Runtime.Subscription
 
   @spacebar key(:space)
   @green color(:green)
+  @bold attribute(:bold)
 
   def init(_context) do
     %{
@@ -21,7 +22,8 @@ defmodule RubiksTimer do
       times: get_historic_times(),
       scramble: get_scramble(),
       solves: get_historic_solves(),
-      instructions_showing: false
+      instructions_showing: false,
+      autosave_enabled: true
     }
   end
 
@@ -33,12 +35,14 @@ defmodule RubiksTimer do
       time: time,
       solves: solves,
       scramble: scramble,
-      instructions_showing: instructions_showing
+      instructions_showing: instructions_showing,
+      autosave_enabled: autosave_enabled
     } = model
 
     case msg do
       {:event, %{key: @spacebar}} ->
         if timer_running do
+          if autosave_enabled, do: save_solve_data(solves)
           %{
             model | solves: [%{scramble: scramble, date: DateTime.utc_now(), time: time} | solves],
             timer_running: !timer_running,
@@ -58,6 +62,9 @@ defmodule RubiksTimer do
 
       {:event, %{ch: ?i}} ->
         %{model | instructions_showing: !instructions_showing}
+
+      {:event, %{ch: ?a}} ->
+        %{model | autosave_enabled: !autosave_enabled}
 
       :tick ->
         if timer_running do
@@ -83,6 +90,7 @@ defmodule RubiksTimer do
             label(content: "spacebar -  start/stop the timer")
             label(content: "'Q' - Close the timer. This won't save your solve data")
             label(content: "'I' - Toggle display complete instructions")
+            label(content: "autosave #{get_autosave_state(model.autosave_enabled)}", attributes: [@bold])
           end
         end
       end
@@ -174,6 +182,7 @@ defmodule RubiksTimer do
             label(content: "'G' - Save the solves data")
             label(content: "'Q' - Close the timer. This won't save your solve data")
             label(content: "'I' - Toggle display complete instructions")
+            label(content: "'A' - enable/disable autosave")
           end
         end
       end

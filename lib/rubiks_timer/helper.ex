@@ -75,4 +75,7 @@ defmodule RubiksTimer.Helper do
     |> Enum.map(fn {k, v} -> {k, length(v)} end)
     |> Map.new()
   end
+
+  def get_autosave_state(true), do: "enabled"
+  def get_autosave_state(false), do: "disabled"
 end
