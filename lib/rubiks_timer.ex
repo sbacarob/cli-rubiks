@@ -42,9 +42,12 @@ defmodule RubiksTimer do
     case msg do
       {:event, %{key: @spacebar}} ->
         if timer_running do
+          solves = [%{scramble: scramble, date: DateTime.utc_now(), time: time} | solves]
+
           if autosave_enabled, do: save_solve_data(solves)
+
           %{
-            model | solves: [%{scramble: scramble, date: DateTime.utc_now(), time: time} | solves],
+            model | solves: solves,
             timer_running: !timer_running,
             scramble: get_scramble(),
             times: [time | times],
