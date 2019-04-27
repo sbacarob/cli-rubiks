@@ -96,8 +96,8 @@ defmodule RubiksTimer do
         column(size: 12) do
           panel title: "Instructions" do
             label(content: "spacebar -  start/stop the timer")
-            label(content: "'Q' - Close the timer. This won't save your solve data")
-            label(content: "'I' - Toggle display complete instructions")
+            label(content: "'Q' - Close the application")
+            label(content: "'I' - Show/hide display complete instructions")
             label(content: "autosave #{get_autosave_state(model.autosave_enabled)}", attributes: [@bold])
           end
         end
@@ -171,10 +171,10 @@ defmodule RubiksTimer do
             label(content: "spacebar -  Start/stop the timer")
             label(content: "'S' - Generate a new scramble without starting the timer")
             label(content: "'G' - Save the solves data")
-            label(content: "'Q' - Close the timer. This won't save your solve data")
-            label(content: "'I' - Toggle display complete instructions")
-            label(content: "'A' - enable/disable autosave")
-            label(content: "'T' - show/hide solve times distribution and fequencies")
+            label(content: "'Q' - Close the timer")
+            label(content: "'I' - Show/hide complete instructions")
+            label(content: "'A' - Enable/disable autosave")
+            label(content: "'T' - Show/hide solve times distribution and fequencies")
           end
         end
       end
