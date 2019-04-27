@@ -24,7 +24,8 @@ defmodule RubiksTimer do
       solves: get_historic_solves(),
       instructions_showing: false,
       autosave_enabled: true,
-      display_time_visuals: false
+      display_time_visuals: false,
+      visualize_times_history: false
     }
   end
 
@@ -38,7 +39,8 @@ defmodule RubiksTimer do
       scramble: scramble,
       instructions_showing: instructions_showing,
       autosave_enabled: autosave_enabled,
-      display_time_visuals: display_time_visuals
+      display_time_visuals: display_time_visuals,
+      visualize_times_history: visualize_times_history
     } = model
 
     case msg do
@@ -73,6 +75,9 @@ defmodule RubiksTimer do
 
       {:event, %{ch: ?t}} ->
         %{model | display_time_visuals: !display_time_visuals}
+
+      {:event, %{ch: ?h}} ->
+        %{model | visualize_times_history: !visualize_times_history}
 
       :tick ->
         if timer_running do
@@ -199,6 +204,15 @@ defmodule RubiksTimer do
           end
         end
       end
+
+      if model.visualize_times_history do
+        overlay(padding: 10) do
+          panel title: "Solve times history" do
+            chart(type: :line, series: model[:times] |> Enum.take(100) |> Enum.reverse(), height: 10)
+          end
+        end
+      end
+
     end
   end
 end
