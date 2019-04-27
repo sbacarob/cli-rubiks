@@ -6,7 +6,7 @@ defmodule RubiksTimer do
 
   import Ratatouille.View
   import Ratatouille.Constants, only: [key: 1, color: 1, attribute: 1]
-  import RubiksTimer.{Helper, Scrambler, Stats}
+  import RubiksTimer.{Helper, Scrambler, Stats, NumberRenderer}
 
   alias Ratatouille.Runtime.Subscription
 
@@ -19,7 +19,7 @@ defmodule RubiksTimer do
     %{
       timer_running: false,
       init_time: DateTime.utc_now(),
-      time: 0,
+      time: 0.0,
       times: get_historic_times(),
       scramble: get_scramble(),
       solves: get_historic_solves(),
@@ -160,7 +160,9 @@ defmodule RubiksTimer do
             column(size: 8) do
 
               panel title: "Time" do
-                label(content: "Current time: #{model[:time]}s")
+                canvas(height: 10, width: 100) do
+                  render_big_number(model[:time])
+                end
               end
 
             end
