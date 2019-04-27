@@ -78,4 +78,13 @@ defmodule RubiksTimer.Helper do
 
   def get_autosave_state(true), do: "enabled"
   def get_autosave_state(false), do: "disabled"
+
+  def get_labels_from_scramble(scramble) do
+    scramble
+    |> String.split(", ")
+    |> Enum.chunk_every(5)
+    |> Enum.map(fn portion ->
+      label(content: Enum.join(portion, ", "), attributes: [@bold], color: @blue)
+    end)
+  end
 end

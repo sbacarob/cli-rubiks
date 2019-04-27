@@ -12,6 +12,7 @@ defmodule RubiksTimer do
 
   @spacebar key(:space)
   @green color(:green)
+  @white color(:white)
   @bold attribute(:bold)
 
   def init(_context) do
@@ -109,9 +110,45 @@ defmodule RubiksTimer do
       end
 
       row do
-        column(size: 12) do
+        column(size: 6) do
           panel title: "Scramble" do
-            label(content: model[:scramble])
+            get_labels_from_scramble(model[:scramble])
+          end
+        end
+        column(size: 6) do
+
+          panel title: "Statistics" do
+
+            table do
+              table_row do
+                table_cell(content: "Stat", color: @white, attributes: [@bold])
+                table_cell(content: "Last", color: @white, attributes: [@bold])
+                table_cell(content: "Best", color: @white, attributes: [@bold])
+              end
+
+              table_row do
+                table_cell(content: "Single")
+                table_cell(content: "#{get_best(model[:times])}", color: @green)
+                table_cell(content: "16.0592")
+              end
+
+              table_row do
+                table_cell(content: "Average of 5")
+                table_cell(content: "#{get_3_of_5(model[:times])}")
+                table_cell(content: "20.59")
+              end
+
+              table_row do
+                table_cell(content: "Average of 10")
+                table_cell(content: "#{get_10_of_12(model[:times])}")
+                table_cell(content: "21.595")
+              end
+
+            end
+
+            label(content: "Solve count: #{length(model[:times])}")
+            label(content: "All time mean: #{get_average(model[:times])}")
+
           end
         end
       end
@@ -129,37 +166,6 @@ defmodule RubiksTimer do
             end
 
             column(size: 4) do
-
-              panel title: "Statistics" do
-
-                table do
-                  table_row do
-                    table_cell(content: "Best:")
-                    table_cell(content: "#{get_best(model[:times])}", color: @green)
-                  end
-
-                  table_row do
-                    table_cell(content: "Average:")
-                    table_cell(content: "#{get_average(model[:times])}")
-                  end
-
-                  table_row do
-                    table_cell(content: "Average 5:")
-                    table_cell(content: "#{get_3_of_5(model[:times])}")
-                  end
-
-                  table_row do
-                    table_cell(content: "Average 10:")
-                    table_cell(content: "#{get_10_of_12(model[:times])}")
-                  end
-
-                  table_row do
-                    table_cell(content: "Solve count:")
-                    table_cell(content: "#{length(model[:times])}")
-                  end
-                end
-
-              end
 
               panel title: "Last 10 times" do
                 table(solve_times)

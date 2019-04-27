@@ -21,7 +21,6 @@ defmodule RubiksTimer.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      #{:ratatouille, "~> 0.4.2"},
       {:ratatouille, git: "https://github.com/ndreynolds/ratatouille"},
       {:jason, "~> 1.1"}
     ]
