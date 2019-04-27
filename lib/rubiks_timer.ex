@@ -23,7 +23,8 @@ defmodule RubiksTimer do
       scramble: get_scramble(),
       solves: get_historic_solves(),
       instructions_showing: false,
-      autosave_enabled: true
+      autosave_enabled: true,
+      display_time_visuals: false
     }
   end
 
@@ -36,7 +37,8 @@ defmodule RubiksTimer do
       solves: solves,
       scramble: scramble,
       instructions_showing: instructions_showing,
-      autosave_enabled: autosave_enabled
+      autosave_enabled: autosave_enabled,
+      display_time_visuals: display_time_visuals
     } = model
 
     case msg do
@@ -68,6 +70,9 @@ defmodule RubiksTimer do
 
       {:event, %{ch: ?a}} ->
         %{model | autosave_enabled: !autosave_enabled}
+
+      {:event, %{ch: ?t}} ->
+        %{model | display_time_visuals: !display_time_visuals}
 
       :tick ->
         if timer_running do
@@ -114,23 +119,6 @@ defmodule RubiksTimer do
 
               panel title: "Time" do
                 label(content: "Current time: #{model[:time]}s")
-              end
-
-              row do
-
-                column(size: 6) do
-                  panel title: "Solve times distribution" do
-
-                    chart(type: :line, series: model[:solves] |> to_histogram() |> Map.values(), height: 15)
-
-                  end
-                end
-
-                column(size: 6) do
-                  panel do
-                    table(get_time_frequencies(model.solves))
-                  end
-                end
               end
 
             end
@@ -186,6 +174,28 @@ defmodule RubiksTimer do
             label(content: "'Q' - Close the timer. This won't save your solve data")
             label(content: "'I' - Toggle display complete instructions")
             label(content: "'A' - enable/disable autosave")
+            label(content: "'T' - show/hide solve times distribution and fequencies")
+          end
+        end
+      end
+
+      if model.display_time_visuals do
+        overlay(padding: 10) do
+          row do
+            column(size: 6) do
+              panel title: "Solve times distribution" do
+
+                chart(type: :line, series: model[:solves] |> to_histogram() |> Map.values(), height: 15)
+
+              end
+            end
+
+            column(size: 6) do
+              panel title: "Solve times frequency" do
+                table(get_time_frequencies(model.solves))
+              end
+            end
+
           end
         end
       end
