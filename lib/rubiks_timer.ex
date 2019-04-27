@@ -128,26 +128,26 @@ defmodule RubiksTimer do
 
               table_row do
                 table_cell(content: "Single")
-                table_cell(content: "#{get_best(model[:times])}", color: @green)
-                table_cell(content: "16.0592")
+                table_cell(content: "#{List.first(model.times)}")
+                table_cell(content: "#{get_best(model.times)}", color: @green)
               end
 
               table_row do
                 table_cell(content: "Average of 5")
-                table_cell(content: "#{get_3_of_5(model[:times])}")
-                table_cell(content: "20.59")
+                table_cell(content: "#{get_3_of_5(model.times)}")
+                table_cell(content: "#{get_best_average_of_5(model.times)}")
               end
 
               table_row do
-                table_cell(content: "Average of 10")
-                table_cell(content: "#{get_10_of_12(model[:times])}")
-                table_cell(content: "21.595")
+                table_cell(content: "Average of 12")
+                table_cell(content: "#{get_10_of_12(model.times)}")
+                table_cell(content: "#{get_best_average_of_12(model.times)}")
               end
 
             end
 
-            label(content: "Solve count: #{length(model[:times])}")
-            label(content: "All time mean: #{get_average(model[:times])}")
+            label(content: "Solve count: #{length(model.times)}")
+            label(content: "All time mean: #{get_average(model.times)}")
 
           end
         end
