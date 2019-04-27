@@ -93,7 +93,6 @@ defmodule RubiksTimer do
   def subscribe(_model) do
     Subscription.interval(1, :tick)
   end
-
   def render(model) do
     solve_times = model |> Map.get(:solves) |> get_children
 
@@ -110,70 +109,74 @@ defmodule RubiksTimer do
       end
 
       row do
-        column(size: 6) do
-          panel title: "Scramble" do
+        column(size: 3) do
+          panel title: "Scramble", height: 11 do
             get_labels_from_scramble(model[:scramble])
           end
         end
-        column(size: 6) do
 
-          panel title: "Statistics" do
+        column(size: 9) do
 
-            table do
-              table_row do
-                table_cell(content: "Stat", color: @white, attributes: [@bold])
-                table_cell(content: "Last", color: @white, attributes: [@bold])
-                table_cell(content: "Best", color: @white, attributes: [@bold])
-              end
-
-              table_row do
-                table_cell(content: "Single")
-                table_cell(content: "#{List.first(model.times)}")
-                table_cell(content: "#{get_best(model.times)}", color: @green)
-              end
-
-              table_row do
-                table_cell(content: "Average of 5")
-                table_cell(content: "#{get_3_of_5(model.times)}")
-                table_cell(content: "#{get_best_average_of_5(model.times)}")
-              end
-
-              table_row do
-                table_cell(content: "Average of 12")
-                table_cell(content: "#{get_10_of_12(model.times)}")
-                table_cell(content: "#{get_best_average_of_12(model.times)}")
-              end
-
+          panel title: "Time" do
+            canvas(height: 8, width: 100) do
+              render_big_number(model[:time])
             end
-
-            label(content: "Solve count: #{length(model.times)}")
-            label(content: "All time mean: #{get_average(model.times)}")
-
           end
+
         end
+
       end
 
       row do
         column(size: 12) do
           row do
 
-            column(size: 8) do
-
-              panel title: "Time" do
-                canvas(height: 10, width: 100) do
-                  render_big_number(model[:time])
-                end
-              end
-
-            end
-
-            column(size: 4) do
+            column(size: 3) do
 
               panel title: "Last 10 times" do
                 table(solve_times)
               end
 
             end
+
+
+            column(size: 9) do
+
+              panel title: "Statistics" do
+
+                table do
+                  table_row do
+                    table_cell(content: "Stat", color: @white, attributes: [@bold])
+                    table_cell(content: "Last", color: @white, attributes: [@bold])
+                    table_cell(content: "Best", color: @white, attributes: [@bold])
+                  end
+
+                  table_row do
+                    table_cell(content: "Single")
+                    table_cell(content: "#{List.first(model.times)}")
+                    table_cell(content: "#{get_best(model.times)}", color: @green)
+                  end
+
+                  table_row do
+                    table_cell(content: "Average of 5")
+                    table_cell(content: "#{get_3_of_5(model.times)}")
+                    table_cell(content: "#{get_best_average_of_5(model.times)}")
+                  end
+
+                  table_row do
+                    table_cell(content: "Average of 12")
+                    table_cell(content: "#{get_10_of_12(model.times)}")
+                    table_cell(content: "#{get_best_average_of_12(model.times)}")
+                  end
+
+                end
+
+                label(content: "Solve count: #{length(model.times)}")
+                label(content: "All time mean: #{get_average(model.times)}")
+
+              end
+            end
+
           end
         end
       end
