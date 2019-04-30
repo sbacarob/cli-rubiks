@@ -80,6 +80,11 @@ defmodule RubiksTimer do
       {:event, %{ch: ?h}} ->
         %{model | visualize_times_history: !visualize_times_history}
 
+      {:event, %{ch: ?d}} ->
+        %{model | times: Enum.slice(times, 1, length(times)),
+          solves: Enum.slice(solves, 1, length(solves))
+        }
+
       :tick ->
         if timer_running do
           %{model | time: DateTime.diff(DateTime.utc_now(), init_time, :microsecond) / 1000000}
@@ -186,6 +191,7 @@ defmodule RubiksTimer do
           panel title: "Instructions", height: :fill do
             label(content: "spacebar -  Start/stop the timer")
             label(content: "'S' - Generate a new scramble without starting the timer")
+            label(content: "'D' - Delete the last recorded time")
             label(content: "'G' - Save the solves data")
             label(content: "'Q' - Close the timer")
             label(content: "'I' - Show/hide complete instructions")
