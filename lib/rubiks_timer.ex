@@ -86,6 +86,7 @@ defmodule RubiksTimer do
         if autosave_enabled, do: save_solve_data(solves)
 
         %{model | times: Enum.slice(times, 1, length(times)),
+          time: 0.0,
           solves: solves
         }
 
