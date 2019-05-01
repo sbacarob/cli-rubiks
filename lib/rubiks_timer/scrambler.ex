@@ -9,46 +9,55 @@ defmodule RubiksTimer.Scrambler do
     |> Enum.join(", ")
   end
 
-  def valid_tokens([t | tail]) when t in ["L", "L'", "L2"] do
-    remove_self = all_tokens() -- ["L", "L'", "L2"]
-    if is_list(tail) and List.first(tail) =~ "R", do: remove_self -- ["R", "R'", "R2"], else: remove_self
-  end
-
-  def valid_tokens([t | tail]) when t in ["U", "U'", "U2"] do
-    remove_self = all_tokens() -- ["U", "U'", "U2"]
-    if is_list(tail) and List.first(tail) =~ "D", do: remove_self -- ["D", "D'", "D2"], else: remove_self
-  end
-
-  def valid_tokens([t | tail]) when t in ["R", "R'", "R2"] do
-    remove_self = all_tokens() -- ["R", "R'", "R2"]
-    if is_list(tail) and List.first(tail) =~ "L", do: remove_self -- ["L", "L'", "L2"], else: remove_self
-  end
-
-  def valid_tokens([t | tail]) when t in ["F", "F'", "F2"] do
-    remove_self = all_tokens() -- ["F", "F'", "F2"]
-    if is_list(tail) and List.first(tail) =~ "B", do: remove_self -- ["B", "B'", "B2"], else: remove_self
-  end
-
-  def valid_tokens([t | tail]) when t in ["B", "B'", "B2"] do
-    remove_self = all_tokens() -- ["B", "B'", "B2"]
-    if is_list(tail) and List.first(tail) =~ "F", do: remove_self -- ["F", "F'", "F2"], else: remove_self
-  end
-
-  def valid_tokens([t | tail]) when t in ["D", "D'", "D2"] do
-    remove_self = all_tokens() -- ["D", "D'", "D2"]
-    if is_list(tail) and List.first(tail) =~ "U", do: remove_self -- ["U", "U'", "U2"], else: remove_self
+  def valid_tokens([t | tail]) do
+    get_move_face(t)
+    |> remove_redundant_moves(tail)
   end
 
   def valid_tokens(_), do: all_tokens()
 
-  def all_tokens() do
-    [
-      "L", "L'", "L2",
-      "R", "R'", "R2",
-      "U", "U'", "U2",
-      "D", "D'", "D2",
-      "F", "F'", "F2",
-      "B", "B'", "B2"
-    ]
+  defp remove_redundant_moves(face, tail) when is_list(tail) do
+    previous_face = tail
+      |> List.first()
+      |> get_move_face()
+
+    if previous_face == opposite_face(face) do
+      (all_tokens() -- face_moves()[face]) -- face_moves()[previous_face]
+    else
+      all_tokens() -- face_moves()[face]
+    end
   end
+
+  defp remove_redundant_moves(face, _tail), do: all_tokens() -- face_moves()[face]
+
+  def all_tokens() do
+    face_moves()
+    |> Map.values()
+    |> List.flatten()
+  end
+
+  defp face_moves do
+    %{
+      "L" => ["L", "L'", "L2"],
+      "R" => ["R", "R'", "R2"],
+      "D" => ["D", "D'", "D2"],
+      "U" => ["U", "U'", "U2"],
+      "F" => ["F", "F'", "F2"],
+      "B" => ["B", "B'", "B2"]
+    }
+  end
+
+  defp get_move_face(move) do
+    face_moves()
+    |> Enum.find(fn {_k, v} -> move in v end)
+    |> elem(0)
+  end
+
+  defp opposite_face("L"), do: "R"
+  defp opposite_face("R"), do: "L"
+  defp opposite_face("U"), do: "D"
+  defp opposite_face("D"), do: "U"
+  defp opposite_face("F"), do: "B"
+  defp opposite_face("B"), do: "F"
+
 end
