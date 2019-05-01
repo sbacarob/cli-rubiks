@@ -81,8 +81,12 @@ defmodule RubiksTimer do
         %{model | visualize_times_history: !visualize_times_history}
 
       {:event, %{ch: ?d}} ->
+        solves = Enum.slice(solves, 1, length(solves))
+
+        if autosave_enabled, do: save_solve_data(solves)
+
         %{model | times: Enum.slice(times, 1, length(times)),
-          solves: Enum.slice(solves, 1, length(solves))
+          solves: solves
         }
 
       :tick ->
