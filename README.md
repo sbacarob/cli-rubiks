@@ -1,4 +1,4 @@
-# Elixir cube timer for the command line
+# Elixir Rubik's cube timer for the command line
 
 ![initial state screenshot](doc/initial_screenshot.png)
 
