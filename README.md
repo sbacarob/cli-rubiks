@@ -1,8 +1,8 @@
-# Elixir Rubik's cube timer
+# Elixir cube timer for the command line
 
 ![initial state screenshot](doc/initial_screenshot.png)
 
-This is a Rubik's cube timer for the command line implemented in Elixir.
+This is a Rubik's cube timer for the command line implemented in Elixir using [Ratatouille](https://github.com/ndreynolds/ratatouille).
 
 ## Features
 
