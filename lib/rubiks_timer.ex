@@ -209,17 +209,18 @@ defmodule RubiksTimer do
       if model.display_time_visuals do
         overlay(padding: 10) do
           row do
+
+            column(size: 6) do
+              panel title: "Solve times frequency" do
+                table(get_time_frequencies(model.solves))
+              end
+            end
+
             column(size: 6) do
               panel title: "Solve times distribution" do
 
                 chart(type: :line, series: model[:solves] |> to_histogram() |> Map.values(), height: 15)
 
-              end
-            end
-
-            column(size: 6) do
-              panel title: "Solve times frequency" do
-                table(get_time_frequencies(model.solves))
               end
             end
 
