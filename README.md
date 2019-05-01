@@ -8,7 +8,7 @@ This is a Rubik's cube timer for the command line implemented in Elixir.
 
 * Time your solves. Press the spacebar to start/stop the timer.
 ![solved state screenshot](doc/solved_screenshot.png)
-* Generate scrambles for 3x3x3. You get an initial scramble. `S` generates a new scramble without starting the timer
+* Generate scrambles for 3x3x3. You get an initial scramble and new scrambles are automatically generated upon solve. `S` generates a new scramble without starting the timer
 * Delete latest solve. Press `D` to delete the latest recorded solve.
 * Store your solve data. If autosaved enabled, this is updated upon solve completion/deletion. If not, you can save by pressing `G`. Or press `A` to enable/disable autosave.
 * A few solve statistics:
