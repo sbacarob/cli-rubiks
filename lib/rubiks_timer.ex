@@ -179,6 +179,18 @@ defmodule RubiksTimer do
                     table_cell(content: "#{get_best_average_of_n(model.times, 12)}")
                   end
 
+                  table_row do
+                    table_cell(content: "Average of 50")
+                    table_cell(content: "#{get_average_of_n(model.times, 50)}")
+                    table_cell(content: "#{get_best_average_of_n(model.times, 50)}")
+                  end
+
+                  table_row do
+                    table_cell(content: "Average of 100")
+                    table_cell(content: "#{get_average_of_n(model.times, 100)}")
+                    table_cell(content: "#{get_best_average_of_n(model.times, 100)}")
+                  end
+
                 end
 
                 label(content: "Solve count: #{length(model.times)}")
