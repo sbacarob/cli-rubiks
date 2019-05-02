@@ -6,45 +6,35 @@ defmodule RubiksTimer.Stats do
   def get_average([]), do: "-"
   def get_average(times), do: Enum.sum(times) / Kernel.length(times)
 
-  def get_3_of_5(times) when length(times) < 3, do: "-"
-  def get_3_of_5(times) do
+  def get_average_of_n(times, n) when length(times) < n, do: "-"
+  def get_average_of_n(times, n) do
+    cut = trunc(leave_out(n) / 2)
+
     times
-    |> Enum.take(5)
+    |> Enum.take(n)
     |> Enum.sort()
-    |> Enum.slice(1, 3)
+    |> Enum.slice(cut, n - (cut + 1))
     |> Enum.sum()
-    |> Kernel./(3)
+    |> Kernel./(n - 2 * cut)
   end
 
-  def get_best_average_of_5(times) when length(times) < 3, do: "-"
-  def get_best_average_of_5(times) do
+  def get_best_average_of_n(times, n) when length(times) < n, do: "-"
+  def get_best_average_of_n(times, n) do
     times
     |> Stream.unfold(fn
       [] -> nil
-      l -> {Enum.take(l, 5) |> get_3_of_5(), tl(l)}
+      l -> {Enum.take(l, n) |> get_average_of_n(n), tl(l)}
     end)
     |> Enum.to_list()
     |> Enum.min()
   end
 
-  def get_10_of_12(times) when length(times) < 12, do: "-"
-  def get_10_of_12(times) do
-    times
-    |> Enum.take(12)
-    |> Enum.sort()
-    |> Enum.slice(1, 10)
-    |> Enum.sum()
-    |> Kernel./(10)
-  end
+  defp leave_out(n) do
+    rounded_up_half = n
+      |> Kernel./(10)
+      |> Float.ceil()
+      |> Kernel.trunc()
 
-  def get_best_average_of_12(times) when length(times) < 12, do: "-"
-  def get_best_average_of_12(times) do
-    times
-    |> Stream.unfold(fn
-      [] -> nil
-      l -> {Enum.take(l, 12) |> get_10_of_12(), tl(l)}
-    end)
-    |> Enum.to_list()
-    |> Enum.min()
+    if rem(rounded_up_half, 2) == 0, do: rounded_up_half, else: rounded_up_half + 1
   end
 end

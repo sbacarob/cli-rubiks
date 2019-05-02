@@ -169,14 +169,14 @@ defmodule RubiksTimer do
 
                   table_row do
                     table_cell(content: "Average of 5")
-                    table_cell(content: "#{get_3_of_5(model.times)}")
-                    table_cell(content: "#{get_best_average_of_5(model.times)}")
+                    table_cell(content: "#{get_average_of_n(model.times, 5)}")
+                    table_cell(content: "#{get_best_average_of_n(model.times, 5)}")
                   end
 
                   table_row do
                     table_cell(content: "Average of 12")
-                    table_cell(content: "#{get_10_of_12(model.times)}")
-                    table_cell(content: "#{get_best_average_of_12(model.times)}")
+                    table_cell(content: "#{get_average_of_n(model.times, 12)}")
+                    table_cell(content: "#{get_best_average_of_n(model.times, 12)}")
                   end
 
                 end
