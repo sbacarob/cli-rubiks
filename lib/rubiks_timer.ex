@@ -16,17 +16,27 @@ defmodule RubiksTimer do
   @bold attribute(:bold)
 
   def init(_context) do
+    times = get_historic_times()
+
     %{
       timer_running: false,
       init_time: DateTime.utc_now(),
       time: 0.0,
-      times: get_historic_times(),
+      times: times,
       scramble: get_scramble(),
       solves: get_historic_solves(),
       instructions_showing: false,
       autosave_enabled: true,
       display_time_visuals: false,
-      visualize_times_history: false
+      visualize_times_history: false,
+      ao5: get_average_of_n(times, 5),
+      bao5: get_best_average_of_n(times, 5),
+      ao12: get_average_of_n(times, 12),
+      bao12: get_best_average_of_n(times, 12),
+      ao50: get_average_of_n(times, 50),
+      bao50: get_best_average_of_n(times, 50),
+      ao100: get_average_of_n(times, 100),
+      bao100: get_best_average_of_n(times, 100)
     }
   end
 
@@ -41,13 +51,26 @@ defmodule RubiksTimer do
       instructions_showing: instructions_showing,
       autosave_enabled: autosave_enabled,
       display_time_visuals: display_time_visuals,
-      visualize_times_history: visualize_times_history
+      visualize_times_history: visualize_times_history,
+      ao5: average_of_5,
+      bao5: best_average_of_5,
+      ao12: average_of_12,
+      bao12: best_average_of_12,
+      ao50: average_of_50,
+      bao50: best_average_of_50,
+      ao100: average_of_100,
+      bao100: best_average_of_100
     } = model
 
     case msg do
       {:event, %{key: @spacebar}} ->
         if timer_running do
           solves = [%{scramble: scramble, date: DateTime.utc_now(), time: time} | solves]
+          times = [time | times]
+          lao5 = get_average_of_n(times, 5)
+          lao12 = get_average_of_n(times, 12)
+          lao50 = get_average_of_n(times, 50)
+          lao100 = get_average_of_n(times, 100)
 
           if autosave_enabled, do: save_solve_data(solves)
 
@@ -55,7 +78,15 @@ defmodule RubiksTimer do
             model | solves: solves,
             timer_running: !timer_running,
             scramble: get_scramble(),
-            times: [time | times],
+            times: times,
+            ao5: lao5,
+            ao12: lao12,
+            ao50: lao50,
+            ao100: lao100,
+            bao5: min(lao5, best_average_of_5),
+            bao12: min(lao12, best_average_of_12),
+            bao50: min(lao50, best_average_of_50),
+            bao100: min(lao100, best_average_of_100)
           }
         else
           %{model | timer_running: !timer_running, init_time: DateTime.utc_now(), time: 0}
@@ -169,26 +200,26 @@ defmodule RubiksTimer do
 
                   table_row do
                     table_cell(content: "Average of 5")
-                    table_cell(content: "#{get_average_of_n(model.times, 5)}")
-                    table_cell(content: "#{get_best_average_of_n(model.times, 5)}")
+                    table_cell(content: "#{model.ao5}")
+                    table_cell(content: "#{model.bao5}")
                   end
 
                   table_row do
                     table_cell(content: "Average of 12")
-                    table_cell(content: "#{get_average_of_n(model.times, 12)}")
-                    table_cell(content: "#{get_best_average_of_n(model.times, 12)}")
+                    table_cell(content: "#{model.ao12}")
+                    table_cell(content: "#{model.bao12}")
                   end
 
                   table_row do
                     table_cell(content: "Average of 50")
-                    table_cell(content: "#{get_average_of_n(model.times, 50)}")
-                    table_cell(content: "#{get_best_average_of_n(model.times, 50)}")
+                    table_cell(content: "#{model.ao50}")
+                    table_cell(content: "#{model.bao50}")
                   end
 
                   table_row do
                     table_cell(content: "Average of 100")
-                    table_cell(content: "#{get_average_of_n(model.times, 100)}")
-                    table_cell(content: "#{get_best_average_of_n(model.times, 100)}")
+                    table_cell(content: "#{model.ao100}")
+                    table_cell(content: "#{model.bao100}")
                   end
 
                 end
