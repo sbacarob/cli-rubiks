@@ -52,13 +52,9 @@ defmodule RubiksTimer do
       autosave_enabled: autosave_enabled,
       display_time_visuals: display_time_visuals,
       visualize_times_history: visualize_times_history,
-      ao5: average_of_5,
       bao5: best_average_of_5,
-      ao12: average_of_12,
       bao12: best_average_of_12,
-      ao50: average_of_50,
       bao50: best_average_of_50,
-      ao100: average_of_100,
       bao100: best_average_of_100
     } = model
 
