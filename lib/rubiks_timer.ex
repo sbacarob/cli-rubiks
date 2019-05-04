@@ -250,12 +250,12 @@ defmodule RubiksTimer do
           row do
 
             column(size: 6) do
-              panel title: "Solve times frequency" do
+              panel title: "Solve times frequency", height: 20, padding: 0 do
                 table(get_time_frequencies(model.solves))
               end
             end
 
-            column(size: 6) do
+            column(size: 4) do
               panel title: "Solve times distribution" do
 
                 chart(type: :line, series: model[:solves] |> to_histogram() |> Map.values(), height: 15)
