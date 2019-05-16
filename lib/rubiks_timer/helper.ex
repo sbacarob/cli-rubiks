@@ -87,4 +87,17 @@ defmodule RubiksTimer.Helper do
       label(content: Enum.join(portion, ", "), attributes: [@bold], color: @blue)
     end)
   end
+
+  def plus_2(%{times: []} = model), do: model
+  def plus_2(%{times: [last_time | times], solves: [last_solve | solves]} = model) do
+    updated_model = %{
+      model | times: [last_time + 2 | times],
+      solves: [%{last_solve | time: last_time + 2} | solves],
+      time: last_time + 2
+    }
+
+    if model.autosave_enabled, do: save_solve_data(updated_model.solves)
+
+    updated_model
+  end
 end
