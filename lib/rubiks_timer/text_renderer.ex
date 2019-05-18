@@ -1,28 +1,39 @@
-defmodule RubiksTimer.NumberRenderer do
+defmodule RubiksTimer.TextRenderer do
   
   import Ratatouille.View
 
-  def render_big_number(number) do
+  def render_text(-1) do
+    as_list = ["D", "N", "F"]
+
+    Enum.with_index(as_list, 1)
+    |> Enum.map(fn {v, i} ->
+      render_char(v, calculate_width(as_list, i))
+    end)
+  end
+  def render_text(number) do
     as_list = convert(number)
 
     Enum.with_index(as_list, 1)
     |> Enum.map(fn {v, i} -> 
-      render_number(v, calculate_width(as_list, i))
+      render_char(v, calculate_width(as_list, i))
     end)
   end
 
-  def render_number(num, x \\ 0, y \\ 0)
-  def render_number("0", x, y), do: number_0(x, y)
-  def render_number("1", x, y), do: number_1(x, y)
-  def render_number("2", x, y), do: number_2(x, y)
-  def render_number("3", x, y), do: number_3(x, y)
-  def render_number("4", x, y), do: number_4(x, y)
-  def render_number("5", x, y), do: number_5(x, y)
-  def render_number("6", x, y), do: number_6(x, y)
-  def render_number("7", x, y), do: number_7(x, y)
-  def render_number("8", x, y), do: number_8(x, y)
-  def render_number("9", x, y), do: number_9(x, y)
-  def render_number(".", x, y), do: dot(x, y)
+  def render_char(num, x \\ 0, y \\ 0)
+  def render_char("0", x, y), do: number_0(x, y)
+  def render_char("1", x, y), do: number_1(x, y)
+  def render_char("2", x, y), do: number_2(x, y)
+  def render_char("3", x, y), do: number_3(x, y)
+  def render_char("4", x, y), do: number_4(x, y)
+  def render_char("5", x, y), do: number_5(x, y)
+  def render_char("6", x, y), do: number_6(x, y)
+  def render_char("7", x, y), do: number_7(x, y)
+  def render_char("8", x, y), do: number_8(x, y)
+  def render_char("9", x, y), do: number_9(x, y)
+  def render_char("D", x, y), do: letter_d(x, y)
+  def render_char("N", x, y), do: letter_n(x, y)
+  def render_char("F", x, y), do: letter_f(x, y)
+  def render_char(".", x, y), do: dot(x, y)
 
   def width("0"), do: 7
   def width("1"), do: 3
@@ -35,6 +46,9 @@ defmodule RubiksTimer.NumberRenderer do
   def width("8"), do: 7
   def width("9"), do: 7
   def width("."), do: 3
+  def width("D"), do: 7
+  def width("N"), do: 7
+  def width("F"), do: 7
 
   defp convert(num) do
     as_list = to_string(num) |> String.split("")
@@ -291,6 +305,82 @@ defmodule RubiksTimer.NumberRenderer do
       canvas_cell(x: x + 3, y: y + 4, char: "/"),
       canvas_cell(x: x + 4, y: y + 4, char: "_"),
       canvas_cell(x: x + 5, y: y + 4, char: "/"),
+    ]
+  end
+
+  def letter_d(x \\ 0, y \\ 0) do
+    [
+      canvas_cell(x: x + 1, y: y, char: "_"),
+      canvas_cell(x: x + 2, y: y, char: "_"),
+      canvas_cell(x: x + 3, y: y, char: "_"),
+      canvas_cell(x: x + 4, y: y, char: "_"),
+      canvas_cell(x: x, y: y + 1, char: "|"),
+      canvas_cell(x: x + 3, y: y + 1, char: "_"),
+      canvas_cell(x: x + 5, y: y + 1, char: "\\"),
+      canvas_cell(x: x, y: y + 2, char: "|"),
+      canvas_cell(x: x + 2, y: y + 2, char: "|"),
+      canvas_cell(x: x + 4, y: y + 2, char: "|"),
+      canvas_cell(x: x + 6, y: y + 2, char: "|"),
+      canvas_cell(x: x, y: y + 3, char: "|"),
+      canvas_cell(x: x + 2, y: y + 3, char: "|"),
+      canvas_cell(x: x + 3, y: y + 3, char: "_"),
+      canvas_cell(x: x + 4, y: y + 3, char: "|"),
+      canvas_cell(x: x + 6, y: y + 3, char: "|"),
+      canvas_cell(x: x, y: y + 4, char: "|"),
+      canvas_cell(x: x + 1, y: y + 4, char: "_"),
+      canvas_cell(x: x + 2, y: y + 4, char: "_"),
+      canvas_cell(x: x + 3, y: y + 4, char: "_"),
+      canvas_cell(x: x + 4, y: y + 4, char: "_"),
+      canvas_cell(x: x + 5, y: y + 4, char: "/"),
+    ]
+  end
+
+  def letter_n(x \\ 0, y \\ 0) do
+    [
+      canvas_cell(x: x + 1, y: y, char: "_"),
+      canvas_cell(x: x + 5, y: y, char: "_"),
+      canvas_cell(x: x, y: y + 1, char: "|"),
+      canvas_cell(x: x + 2, y: y + 1, char: "\\"),
+      canvas_cell(x: x + 4, y: y + 1, char: "|"),
+      canvas_cell(x: x + 6, y: y + 1, char: "|"),
+      canvas_cell(x: x, y: y + 2, char: "|"),
+      canvas_cell(x: x + 3, y: y + 2, char: "\\"),
+      canvas_cell(x: x + 4, y: y + 2, char: "|"),
+      canvas_cell(x: x + 6, y: y + 2, char: "|"),
+      canvas_cell(x: x, y: y + 3, char: "|"),
+      canvas_cell(x: x + 2, y: y + 3, char: "|"),
+      canvas_cell(x: x + 3, y: y + 3, char: "\\"),
+      canvas_cell(x: x + 6, y: y + 3, char: "|"),
+      canvas_cell(x: x, y: y + 4, char: "|"),
+      canvas_cell(x: x + 1, y: y + 4, char: "_"),
+      canvas_cell(x: x + 2, y: y + 4, char: "|"),
+      canvas_cell(x: x + 4, y: y + 4, char: "\\"),
+      canvas_cell(x: x + 5, y: y + 4, char: "_"),
+      canvas_cell(x: x + 6, y: y + 4, char: "|")
+    ]
+  end
+
+  def letter_f(x \\ 0, y \\ 0) do
+    [
+      canvas_cell(x: x + 1, y: y, char: "_"),
+      canvas_cell(x: x + 2, y: y, char: "_"),
+      canvas_cell(x: x + 3, y: y, char: "_"),
+      canvas_cell(x: x + 4, y: y, char: "_"),
+      canvas_cell(x: x + 5, y: y, char: "_"),
+      canvas_cell(x: x, y: y + 1, char: "|"),
+      canvas_cell(x: x + 3, y: y + 1, char: "_"),
+      canvas_cell(x: x + 4, y: y + 1, char: "_"),
+      canvas_cell(x: x + 5, y: y + 1, char: "_"),
+      canvas_cell(x: x + 6, y: y + 1, char: "|"),
+      canvas_cell(x: x, y: y + 2, char: "|"),
+      canvas_cell(x: x + 2, y: y + 2, char: "|"),
+      canvas_cell(x: x + 3, y: y + 2, char: "_"),
+      canvas_cell(x: x, y: y + 3, char: "|"),
+      canvas_cell(x: x + 3, y: y + 3, char: "_"),
+      canvas_cell(x: x + 4, y: y + 3, char: "|"),
+      canvas_cell(x: x, y: y + 4, char: "|"),
+      canvas_cell(x: x + 1, y: y + 4, char: "_"),
+      canvas_cell(x: x + 2, y: y + 4, char: "|"),
     ]
   end
 

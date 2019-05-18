@@ -6,7 +6,7 @@ defmodule RubiksTimer do
 
   import Ratatouille.View
   import Ratatouille.Constants, only: [key: 1, color: 1, attribute: 1]
-  import RubiksTimer.{Helper, Scrambler, Stats, NumberRenderer}
+  import RubiksTimer.{Helper, Scrambler, Stats, TextRenderer}
 
   alias Ratatouille.Runtime.Subscription
 
@@ -159,7 +159,7 @@ defmodule RubiksTimer do
 
           panel title: "Time" do
             canvas(height: 8, width: 100) do
-              render_big_number(model[:time])
+              render_text(model[:time])
             end
           end
 
