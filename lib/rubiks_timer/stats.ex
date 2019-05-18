@@ -1,5 +1,7 @@
 defmodule RubiksTimer.Stats do
 
+  import RubiksTimer.Helper, only: [clean_times: 1]
+
   def get_best([]), do: "-"
   def get_best(times), do: Enum.min(times)
 
@@ -12,6 +14,7 @@ defmodule RubiksTimer.Stats do
 
     times
     |> Enum.take(n)
+    |> replace_dnf_times()
     |> Enum.sort()
     |> Enum.slice(cut, n - (cut + 1))
     |> Enum.sum()
@@ -36,5 +39,13 @@ defmodule RubiksTimer.Stats do
       |> Kernel.trunc()
 
     if rem(rounded_up_half, 2) == 0, do: rounded_up_half, else: rounded_up_half + 1
+  end
+
+  defp replace_dnf_times([]), do: []
+  defp replace_dnf_times(times) do
+    no_dnfs_avg = clean_times(times)
+      |> get_average()
+
+    Enum.map(times, fn time -> if time == -1, do: no_dnfs_avg, else: time end)
   end
 end

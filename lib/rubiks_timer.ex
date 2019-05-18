@@ -197,7 +197,7 @@ defmodule RubiksTimer do
                   table_row do
                     table_cell(content: "Single")
                     table_cell(content: "#{get_value(List.first(model.times))}")
-                    table_cell(content: "#{get_best(model.times)}", color: @green)
+                    table_cell(content: "#{clean_times(model.times) |>get_best()}", color: @green)
                   end
 
                   table_row do
@@ -227,7 +227,7 @@ defmodule RubiksTimer do
                 end
 
                 label(content: "Solve count: #{length(model.times)}")
-                label(content: "All time mean: #{get_average(model.times)}")
+                label(content: "All time mean: #{clean_times(model.times) |> get_average()}")
 
               end
             end

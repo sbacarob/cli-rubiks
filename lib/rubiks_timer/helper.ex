@@ -91,6 +91,7 @@ defmodule RubiksTimer.Helper do
   end
 
   def plus_2(%{times: []} = model), do: model
+  def plus_2(%{times: [-1 | _]} = model), do: model
   def plus_2(%{times: [last_time | times], solves: [last_solve | solves]} = model) do
     updated_model = %{
       model | times: [last_time + 2 | times],
@@ -104,7 +105,7 @@ defmodule RubiksTimer.Helper do
   end
 
   def dnf(%{times: []} = model), do: model
-  def dnf(%{times: [last_time | times], solves: [last_solve | solves]} = model) do
+  def dnf(%{times: [_ | times], solves: [last_solve | solves]} = model) do
     updated_model = %{
       model | times: [-1 | times],
       solves: [%{last_solve | time: -1} | solves],
@@ -118,4 +119,7 @@ defmodule RubiksTimer.Helper do
 
   def get_value(-1), do: "DNF"
   def get_value(value), do: value
+
+  def clean_times([]), do: []
+  def clean_times(times), do: Enum.reject(times, &(&1 == -1))
 end
