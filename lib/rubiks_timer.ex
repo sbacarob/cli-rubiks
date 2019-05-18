@@ -6,7 +6,7 @@ defmodule RubiksTimer do
 
   import Ratatouille.View
   import Ratatouille.Constants, only: [key: 1, color: 1, attribute: 1]
-  import RubiksTimer.{Helper, Scrambler, Stats, NumberRenderer}
+  import RubiksTimer.{Helper, Scrambler, Stats, TextRenderer}
 
   alias Ratatouille.Runtime.Subscription
 
@@ -120,6 +120,9 @@ defmodule RubiksTimer do
       {:event, %{ch: ?2}} ->
         plus_2(model)
 
+      {:event, %{ch: ?f}} ->
+        dnf(model)
+
       :tick ->
         if timer_running do
           %{model | time: DateTime.diff(DateTime.utc_now(), init_time, :microsecond) / 1000000}
@@ -159,7 +162,7 @@ defmodule RubiksTimer do
 
           panel title: "Time" do
             canvas(height: 8, width: 100) do
-              render_big_number(model[:time])
+              render_text(model[:time])
             end
           end
 
@@ -193,38 +196,38 @@ defmodule RubiksTimer do
 
                   table_row do
                     table_cell(content: "Single")
-                    table_cell(content: "#{List.first(model.times)}")
-                    table_cell(content: "#{get_best(model.times)}", color: @green)
+                    table_cell(content: "#{display_value(List.first(model.times))}")
+                    table_cell(content: "#{clean_times(model.times) |>get_best()}", color: @green)
                   end
 
                   table_row do
                     table_cell(content: "Average of 5")
-                    table_cell(content: "#{model.ao5}")
-                    table_cell(content: "#{model.bao5}")
+                    table_cell(content: "#{display_value(model.ao5)}")
+                    table_cell(content: "#{display_value(model.bao5)}")
                   end
 
                   table_row do
                     table_cell(content: "Average of 12")
-                    table_cell(content: "#{model.ao12}")
-                    table_cell(content: "#{model.bao12}")
+                    table_cell(content: "#{display_value(model.ao12)}")
+                    table_cell(content: "#{display_value(model.bao12)}")
                   end
 
                   table_row do
                     table_cell(content: "Average of 50")
-                    table_cell(content: "#{model.ao50}")
-                    table_cell(content: "#{model.bao50}")
+                    table_cell(content: "#{display_value(model.ao50)}")
+                    table_cell(content: "#{display_value(model.bao50)}")
                   end
 
                   table_row do
                     table_cell(content: "Average of 100")
-                    table_cell(content: "#{model.ao100}")
-                    table_cell(content: "#{model.bao100}")
+                    table_cell(content: "#{display_value(model.ao100)}")
+                    table_cell(content: "#{display_value(model.bao100)}")
                   end
 
                 end
 
                 label(content: "Solve count: #{length(model.times)}")
-                label(content: "All time mean: #{get_average(model.times)}")
+                label(content: "All time mean: #{clean_times(model.times) |> get_average()}")
 
               end
             end
@@ -238,6 +241,7 @@ defmodule RubiksTimer do
           panel title: "Instructions", height: :fill do
             label(content: "spacebar -  Start/stop the timer")
             label(content: "'2' - Plus 2 to the last time")
+            label(content: "'F' - DNF last time")
             label(content: "'S' - Generate a new scramble without starting the timer")
             label(content: "'D' - Delete the last recorded time")
             label(content: "'G' - Save the solves data")

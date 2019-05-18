@@ -18,6 +18,8 @@ defmodule RubiksTimer.Helper do
     |> Enum.map(fn
       {v, i} ->
         cond do
+          v == -1 ->
+            [ table_row([table_cell(content: "#{i}. DNF")])]
           v == Enum.min(times) ->
             [ table_row([table_cell(content: "#{i}. #{v}", color: @green)]) ]
           v == Enum.max(times) ->
@@ -89,6 +91,7 @@ defmodule RubiksTimer.Helper do
   end
 
   def plus_2(%{times: []} = model), do: model
+  def plus_2(%{times: [-1 | _]} = model), do: model
   def plus_2(%{times: [last_time | times], solves: [last_solve | solves]} = model) do
     updated_model = %{
       model | times: [last_time + 2 | times],
@@ -100,4 +103,24 @@ defmodule RubiksTimer.Helper do
 
     updated_model
   end
+
+  def dnf(%{times: []} = model), do: model
+  def dnf(%{times: [_ | times], solves: [last_solve | solves]} = model) do
+    updated_model = %{
+      model | times: [-1 | times],
+      solves: [%{last_solve | time: -1} | solves],
+      time: -1
+    }
+
+    if model.autosave_enabled, do: save_solve_data(updated_model.solves)
+
+    updated_model
+  end
+
+  def display_value(-1), do: "DNF"
+  def display_value(0.0), do: "-"
+  def display_value(value), do: value
+
+  def clean_times([]), do: []
+  def clean_times(times), do: Enum.reject(times, &(&1 == -1))
 end
