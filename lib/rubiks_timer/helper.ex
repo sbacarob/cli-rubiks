@@ -117,8 +117,9 @@ defmodule RubiksTimer.Helper do
     updated_model
   end
 
-  def get_value(-1), do: "DNF"
-  def get_value(value), do: value
+  def display_value(-1), do: "DNF"
+  def display_value(0.0), do: "-"
+  def display_value(value), do: value
 
   def clean_times([]), do: []
   def clean_times(times), do: Enum.reject(times, &(&1 == -1))

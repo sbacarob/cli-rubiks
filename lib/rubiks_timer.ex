@@ -196,32 +196,32 @@ defmodule RubiksTimer do
 
                   table_row do
                     table_cell(content: "Single")
-                    table_cell(content: "#{get_value(List.first(model.times))}")
+                    table_cell(content: "#{display_value(List.first(model.times))}")
                     table_cell(content: "#{clean_times(model.times) |>get_best()}", color: @green)
                   end
 
                   table_row do
                     table_cell(content: "Average of 5")
-                    table_cell(content: "#{model.ao5}")
-                    table_cell(content: "#{model.bao5}")
+                    table_cell(content: "#{display_value(model.ao5)}")
+                    table_cell(content: "#{display_value(model.bao5)}")
                   end
 
                   table_row do
                     table_cell(content: "Average of 12")
-                    table_cell(content: "#{model.ao12}")
-                    table_cell(content: "#{model.bao12}")
+                    table_cell(content: "#{display_value(model.ao12)}")
+                    table_cell(content: "#{display_value(model.bao12)}")
                   end
 
                   table_row do
                     table_cell(content: "Average of 50")
-                    table_cell(content: "#{model.ao50}")
-                    table_cell(content: "#{model.bao50}")
+                    table_cell(content: "#{display_value(model.ao50)}")
+                    table_cell(content: "#{display_value(model.bao50)}")
                   end
 
                   table_row do
                     table_cell(content: "Average of 100")
-                    table_cell(content: "#{model.ao100}")
-                    table_cell(content: "#{model.bao100}")
+                    table_cell(content: "#{display_value(model.ao100)}")
+                    table_cell(content: "#{display_value(model.bao100)}")
                   end
 
                 end

@@ -5,7 +5,7 @@ defmodule RubiksTimer.Stats do
   def get_best([]), do: "-"
   def get_best(times), do: Enum.min(times)
 
-  def get_average([]), do: "-"
+  def get_average([]), do: 0
   def get_average(times), do: Enum.sum(times) / Kernel.length(times)
 
   def get_average_of_n(times, n) when length(times) < n, do: "-"
@@ -29,6 +29,7 @@ defmodule RubiksTimer.Stats do
       l -> {Enum.take(l, n) |> get_average_of_n(n), tl(l)}
     end)
     |> Enum.to_list()
+    |> Enum.reject(&(&1 == 0))
     |> Enum.min()
   end
 
