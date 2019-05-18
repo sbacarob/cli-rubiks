@@ -100,4 +100,17 @@ defmodule RubiksTimer.Helper do
 
     updated_model
   end
+
+  def dnf(%{times: []} = model), do: model
+  def dnf(%{times: [last_time | times], solves: [last_solve | solves]} = model) do
+    updated_model = %{
+      model | times: [-1 | times],
+      solves: [%{last_solve | time: -1} | solves],
+      time: -1
+    }
+
+    if model.autosave_enabled, do: save_solve_data(updated_model.solves)
+
+    updated_model
+  end
 end

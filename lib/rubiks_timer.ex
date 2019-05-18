@@ -120,6 +120,9 @@ defmodule RubiksTimer do
       {:event, %{ch: ?2}} ->
         plus_2(model)
 
+      {:event, %{ch: ?f}} ->
+        dnf(model)
+
       :tick ->
         if timer_running do
           %{model | time: DateTime.diff(DateTime.utc_now(), init_time, :microsecond) / 1000000}
@@ -238,6 +241,7 @@ defmodule RubiksTimer do
           panel title: "Instructions", height: :fill do
             label(content: "spacebar -  Start/stop the timer")
             label(content: "'2' - Plus 2 to the last time")
+            label(content: "'F' - DNF last time")
             label(content: "'S' - Generate a new scramble without starting the timer")
             label(content: "'D' - Delete the last recorded time")
             label(content: "'G' - Save the solves data")
