@@ -196,7 +196,7 @@ defmodule RubiksTimer do
 
                   table_row do
                     table_cell(content: "Single")
-                    table_cell(content: "#{List.first(model.times)}")
+                    table_cell(content: "#{get_value(List.first(model.times))}")
                     table_cell(content: "#{get_best(model.times)}", color: @green)
                   end
 

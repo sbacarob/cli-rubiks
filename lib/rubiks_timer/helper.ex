@@ -18,6 +18,8 @@ defmodule RubiksTimer.Helper do
     |> Enum.map(fn
       {v, i} ->
         cond do
+          v == -1 ->
+            [ table_row([table_cell(content: "#{i}. DNF")])]
           v == Enum.min(times) ->
             [ table_row([table_cell(content: "#{i}. #{v}", color: @green)]) ]
           v == Enum.max(times) ->
@@ -113,4 +115,7 @@ defmodule RubiksTimer.Helper do
 
     updated_model
   end
+
+  def get_value(-1), do: "DNF"
+  def get_value(value), do: value
 end
