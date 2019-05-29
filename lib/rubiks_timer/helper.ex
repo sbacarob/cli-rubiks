@@ -32,6 +32,7 @@ defmodule RubiksTimer.Helper do
 
   def get_time_frequencies(solves) do
     data = solves
+      |> clean_times()
       |> to_histogram()
       |> Enum.map(fn
        {k, v} ->
@@ -47,6 +48,13 @@ defmodule RubiksTimer.Helper do
     ])]]
 
     header ++ data
+  end
+
+  def get_times_distribution(solves) do
+    solves
+    |> clean_times()
+    |> to_histogram()
+    |> Map.values()
   end
 
   def save_solve_data(solves) do
@@ -69,6 +77,13 @@ defmodule RubiksTimer.Helper do
         Jason.decode!(contents, keys: :atoms)
         |> Enum.map(fn x -> x[:time] end)
     end
+  end
+
+  def get_recent_times(times) do
+    times
+    |> clean_times()
+    |> Enum.take(100)
+    |> Enum.reverse()
   end
 
   def to_histogram(solves) do
@@ -122,5 +137,6 @@ defmodule RubiksTimer.Helper do
   def display_value(value), do: value
 
   def clean_times([]), do: []
-  def clean_times(times), do: Enum.reject(times, &(&1 == -1))
+  def clean_times([%{} | _] = times), do: Enum.reject(times, &(&1.time == -1))
+  def clean_times(times) when is_list(times), do: Enum.reject(times, &(&1 == -1))
 end

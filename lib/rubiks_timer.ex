@@ -266,7 +266,7 @@ defmodule RubiksTimer do
             column(size: 4) do
               panel title: "Solve times distribution" do
 
-                chart(type: :line, series: model[:solves] |> to_histogram() |> Map.values(), height: 15)
+                chart(type: :line, series: get_times_distribution(model.solves), height: 15)
 
               end
             end
@@ -278,7 +278,7 @@ defmodule RubiksTimer do
       if model.visualize_times_history do
         overlay(padding: 10) do
           panel title: "Solve times history" do
-            chart(type: :line, series: model[:times] |> Enum.take(100) |> Enum.reverse(), height: 10)
+            chart(type: :line, series: get_recent_times(model.times), height: 10)
           end
         end
       end
