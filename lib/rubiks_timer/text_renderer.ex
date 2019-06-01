@@ -34,6 +34,7 @@ defmodule RubiksTimer.TextRenderer do
   def render_char("N", x, y), do: letter_n(x, y)
   def render_char("F", x, y), do: letter_f(x, y)
   def render_char(".", x, y), do: dot(x, y)
+  def render_char("-", x, y), do: dash(x, y)
 
   def width("0"), do: 7
   def width("1"), do: 3
@@ -46,6 +47,7 @@ defmodule RubiksTimer.TextRenderer do
   def width("8"), do: 7
   def width("9"), do: 7
   def width("."), do: 3
+  def width("-"), do: 7
   def width("D"), do: 7
   def width("N"), do: 7
   def width("F"), do: 7
@@ -390,6 +392,23 @@ defmodule RubiksTimer.TextRenderer do
       canvas_cell(x: x + 4, y: y + 4, char: "("),
       canvas_cell(x: x + 5, y: y + 4, char: "_"),
       canvas_cell(x: x + 6, y: y + 4, char: ")"),
+    ]
+  end
+
+  def dash(x \\ 0, y \\ 0) do
+    [
+      canvas_cell(x: x + 1, y: y + 1, char: "_"),
+      canvas_cell(x: x + 2, y: y + 1, char: "_"),
+      canvas_cell(x: x + 3, y: y + 1, char: "_"),
+      canvas_cell(x: x + 4, y: y + 1, char: "_"),
+      canvas_cell(x: x + 5, y: y + 1, char: "_"),
+      canvas_cell(x: x, y: y + 2, char: "|"),
+      canvas_cell(x: x + 1, y: y + 2, char: "_"),
+      canvas_cell(x: x + 2, y: y + 2, char: "_"),
+      canvas_cell(x: x + 3, y: y + 2, char: "_"),
+      canvas_cell(x: x + 4, y: y + 2, char: "_"),
+      canvas_cell(x: x + 5, y: y + 2, char: "_"),
+      canvas_cell(x: x + 6, y: y + 2, char: "|")
     ]
   end
 

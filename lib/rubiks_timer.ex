@@ -36,7 +36,8 @@ defmodule RubiksTimer do
       ao50: get_average_of_n(times, 50),
       bao50: get_best_average_of_n(times, 50),
       ao100: get_average_of_n(times, 100),
-      bao100: get_best_average_of_n(times, 100)
+      bao100: get_best_average_of_n(times, 100),
+      display_time: true
     }
   end
 
@@ -55,7 +56,8 @@ defmodule RubiksTimer do
       bao5: best_average_of_5,
       bao12: best_average_of_12,
       bao50: best_average_of_50,
-      bao100: best_average_of_100
+      bao100: best_average_of_100,
+      display_time: display_time
     } = model
 
     case msg do
@@ -123,6 +125,9 @@ defmodule RubiksTimer do
       {:event, %{ch: ?f}} ->
         dnf(model)
 
+      {:event, %{ch: p}} ->
+        %{model | display_time: !display_time}
+
       :tick ->
         if timer_running do
           %{model | time: DateTime.diff(DateTime.utc_now(), init_time, :microsecond) / 1000000}
@@ -162,7 +167,11 @@ defmodule RubiksTimer do
 
           panel title: "Time" do
             canvas(height: 8, width: 100) do
-              render_text(model[:time])
+              if model.timer_running && !model.display_time do
+                render_text("-.-")
+              else
+                render_text(model[:time])
+              end
             end
           end
 
