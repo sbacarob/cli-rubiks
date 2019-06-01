@@ -258,6 +258,7 @@ defmodule RubiksTimer do
             label(content: "'I' - Show/hide complete instructions")
             label(content: "'A' - Enable/disable autosave")
             label(content: "'T' - Show/hide solve times distribution and frequencies")
+            label(content: "'P' - Toggle display time while solving")
           end
         end
       end
