@@ -20,10 +20,10 @@ This is a Rubik's cube timer for the command line implemented in Elixir using [R
   * Solve times distribution and frequencies. Press `T` to show ![distribution screenshot](doc/distribution_screenshot.png)
   * Chart with times for the latest 100 solves. Press `H` to show ![history screenshot](doc/history_screenshot.png)
 * Press `I` to display complete instructions ![instructions screenshot](doc/instructions_screenshot.png)
+* Hide the time while solving. Press 'P' to toggle.
 
 ## Upcoming features
 
-* Allow to hide timer while solving
 * Support for other puzzles and subsets
 * Import/export times
 * Preferences configuration (timer with big text or regular text, hide while solving, autosave, etc.)
