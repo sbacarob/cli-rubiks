@@ -125,7 +125,7 @@ defmodule RubiksTimer do
       {:event, %{ch: ?f}} ->
         dnf(model)
 
-      {:event, %{ch: p}} ->
+      {:event, %{ch: ?p}} ->
         %{model | display_time: !display_time}
 
       :tick ->
